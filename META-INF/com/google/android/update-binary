@@ -1,0 +1,49 @@
+#!/sbin/sh
+
+#################
+# Initialization
+#################
+
+umask 022
+
+# echo before loading util_functions
+ui_print() { echo "$1"; }
+
+require_new_magisk() {
+  ui_print "*******************************"
+  ui_print " Please install Magisk v20.4+! "
+  ui_print "*******************************"
+  exit 1
+}
+
+#########################
+# Load util_functions.sh
+#########################
+
+OUTFD=$2
+ZIPFILE=$3
+
+mount /data 2>/dev/null
+
+[ -f /data/adb/magisk/util_functions.sh ] || require_new_magisk
+. /data/adb/magisk/util_functions.sh
+[ $MAGISK_VER_CODE -lt 20400 ] && require_new_magisk
+
+ui_print "****************************** "
+ui_print "       A20s GSI Fixes          "
+ui_print "****************************** "
+ui_print " Currently only supports TrebleDroid-based "
+ui_print " Android 11, 12, 13, and 14 GSIs only!     "
+ui_print " "
+ui_print " Does all of the following: "
+ui_print " * Fixes MTP on TrebleDroid 13.0.0_r41 ci-20230518 and newer"
+ui_print " * Fixes the ZRam (enables it) "
+ui_print " * Removes all binaries for phh-remotectl "
+ui_print " " 
+ui_print " Can be used on Android 15+ GSIs but will not  "
+ui_print " Fix the broken fingerprint issue. "
+ui_print " "
+
+
+install_module
+exit 0
