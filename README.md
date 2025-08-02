@@ -3,3 +3,5 @@ A Magisk module that attempts to stabilize the GSI experience on the Samsung Gal
 
 * Please navigate to the [module](https://github.com/InsertX2k/a14gsifixesa20s/tree/main/module) directory if you want to view the source files of the actual magisk module.
 * Navigate to the [ds_incall_audio_svc_app_src](https://github.com/InsertX2k/a14gsifixesa20s/tree/main/ds_incall_audio_svc_app_src) directory if you want to view the source files for the Service app that fixes In-Call Audio for Dual-SIMs.
+
+  **(For GSI Maintainers, If you want to integrate this patch into your GSI, Please DO NOT Use the source code in that directory, instead, contact me on Telegram, user: ziad_mrx, because it still needs some modifications done to be fully integrated with the system)**
