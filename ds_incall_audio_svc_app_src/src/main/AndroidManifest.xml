@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:persistent="true">
+
+    <!-- Permissions for phone state, call log, and privileged access -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+<!--    <uses-permission android:name="android.permission.READ_CALL_LOG"/>-->
+    <uses-permission android:name="android.permission.READ_PHONE_NUMBERS"/> <!-- For API 31+ -->
+    <uses-permission android:name="android.permission.READ_PRIVILEGED_PHONE_STATE"/> <!-- Crucial for system apps -->
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/> <!-- For AudioSystem.setParameters -->
+<!--    <uses-permission android:name="android.permission.DIAGNOSTIC" />-->
+    <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS" />
+
+    <!-- Permission to receive boot completed broadcast -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+
+    <!-- FOREGROUND_SERVICE permission is still declared, but for system apps,
+         the notification requirement can be bypassed. -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <!-- For Android 14 (API 34) and above, if your foreground service type is specific -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_PHONE_CALL"/>
+
+
+
+    <application
+        android:allowBackup="false"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.SimSlotDetectorApp"> <!-- Replace with your app's theme -->
+
+        <!-- MainActivity declaration -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <!-- I do not want this app to have an icon in the launcher, but be able to launch from an activity launcher app-->
+            <!-- Optional: Intent filters to be a default dialer app (if not a system app or for broader compatibility) -->
+            <intent-filter>
+                <action android:name="android.intent.action.DIAL" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="tel" />
+            </intent-filter>
+        </activity>
+
+        <!-- Broadcast Receiver to listen for boot completed -->
+        <receiver
+            android:name=".BootReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:directBootAware="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </receiver>
+
+        <!-- Foreground Service for call detection -->
+        <service
+            android:name=".CallDetectionService"
+            android:enabled="true"
+            android:exported="true"
+            android:foregroundServiceType="phoneCall" tools:targetApi="q"> <!-- phoneCall type for API 29+ -->
+            <!-- If targeting API 34+, you must declare foregroundServiceType -->
+        </service>
+
+    </application>
+</manifest>
