@@ -1,6 +1,8 @@
 vendor.usb.use_ffs_mtp=0
 persist.sys.phh.remote=false
 persist.debug.wfd.enable=1
+# fixes boot on gsis with enforcing control privapp permissions state
+ro.control_privapp_permissions=log
 # these options are for enabling VoLTE and VoWiFi
 # I hope they work tho
 persist.sys.cust.lte_config=true
