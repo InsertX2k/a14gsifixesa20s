@@ -1,0 +1,14 @@
+# Put sepolicy statements here
+# Example: allow { audioserver mediaserver } audioserver_tmpfs file { read write open }
+
+# GCam Aux Camera Permission
+allow { untrusted_app } persist_camera_prop file { read open getattr map }
+allow { untrusted_app } vendor_default_prop file { map }
+allow { untrusted_app } priv_app_tmpfs file { read }
+allow { untrusted_app } rootfs file { read getattr open }
+allow { untrusted_app } vendor_camera_prop file { read open getattr map }
+allow { system_server } vendor_camera_prop file { read open getattr map }
+allow { hal_camera_default } default_prop file { read open getattr map }
+allow { untrusted_app_25 } vendor_camera_prop file { read open getattr map }
+allow { system_server } vendor_default_prop file { read open getattr map }
+allow { platform_app } vendor_default_prop file { read open getattr map }

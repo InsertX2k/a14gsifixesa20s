@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    package="ziad_mrx.samsung.incall_audio.ds.svc"
+    coreApp="true"
     android:persistent="true">
 
     <!-- Permissions for phone state, call log, and privileged access -->
@@ -36,22 +38,29 @@
         <!-- MainActivity declaration -->
         <activity
             android:name=".MainActivity"
+            android:permission="android.permission.WRITE_SECURE_SETTINGS"
             android:exported="true">
+<!--            Show an option in the App info page in Android Settings that allows for launching the MainActivity-->
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.APPLICATION_PREFERENCES" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
             <!-- I do not want this app to have an icon in the launcher, but be able to launch from an activity launcher app-->
             <!-- Optional: Intent filters to be a default dialer app (if not a system app or for broader compatibility) -->
-            <intent-filter>
-                <action android:name="android.intent.action.DIAL" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:scheme="tel" />
-            </intent-filter>
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.DIAL" />-->
+<!--                <category android:name="android.intent.category.DEFAULT" />-->
+<!--            </intent-filter>-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.VIEW" />-->
+<!--                <category android:name="android.intent.category.DEFAULT" />-->
+<!--                <data android:scheme="tel" />-->
+<!--            </intent-filter>-->
         </activity>
 
         <!-- Broadcast Receiver to listen for boot completed -->
@@ -66,7 +75,29 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </receiver>
+        <!-- Broadcast receiver to receive the dialed secret code -->
+        <receiver android:name=".DialerBcReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SECRET_CODE" />
+                <data android:scheme="android_secret_code" android:host="9216"/>
 
+                <!-- You dial *#*#9216#*#* to broadcast to the DialerBcReceiver -->
+            </intent-filter>
+        </receiver>
+        <!-- Broadcast receiver for SIM Tray Changes -->
+        <receiver android:name=".SimChangeHandler"
+            android:exported="true"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.SIM_STATE_CHANGED"/>
+                <action android:name="android.telephony.action.SIM_SLOT_STATUS_CHANGED"/>
+                <action android:name="android.telephony.action.MULTI_SIM_CONFIG_CHANGED"/>
+                <action android:name="android.telephony.action.SIM_CARD_STATE_CHANGED"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </receiver>
         <!-- Foreground Service for call detection -->
         <service
             android:name=".CallDetectionService"

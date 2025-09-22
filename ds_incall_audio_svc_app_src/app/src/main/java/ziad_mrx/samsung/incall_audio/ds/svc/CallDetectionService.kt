@@ -51,12 +51,15 @@ class CallDetectionService : Service() {
 
     private lateinit var telMgrSlot0: TelephonyManager
     private lateinit var telMgrSlot1: TelephonyManager
-
-
+    // variables to hold callback registeration state of each SIM Slot.
+    private var callBackRegisteredSIM0: Boolean = false
+    private var callBackRegisteredSIM1: Boolean = false
+    // variable to indicate whether any call back is registered or not.
     private var isCallBackRegistered: Boolean = false
 
     private val handler = Handler(Looper.getMainLooper()) // Handler for TelecomManager callback
 
+    // telephonyCallback object for monitoring system call state.
     private val telephonyCallback: TelephonyCallback = object : TelephonyCallback(), TelephonyCallback.CallStateListener {
         override fun onCallStateChanged(state: Int) {
             Log.d(TAG, "TelephonyManager Call state changed: $state")
@@ -133,9 +136,15 @@ class CallDetectionService : Service() {
             Log.d(TAG, "onCreate(): Detected Subscription ID for sim slot index 1 is: $subIdForSlotIndex1")
             if (subIdForSlotIndex0 != -1) {
                 telMgrSlot0 = telephonyManager.createForSubscriptionId(subIdForSlotIndex0)
+            } else {
+                // when subIdForSlotIndex0 is -1 (meaning no sim card is available on slot 0)
+                // will just register this to be a telephonyManager object
+                telMgrSlot0 = telephonyManager
             }
             if (subIdForSlotIndex1 != -1){
                 telMgrSlot1 = telephonyManager.createForSubscriptionId(subIdForSlotIndex1)
+            } else {
+                telMgrSlot1 = telephonyManager
             }
             Log.d(TAG, "onCreate(): Successfully created TelephonyManager instances for each SIM slot index!")
             Log.d(TAG,"onCreate(): registerCallCallbacks() will handle registration of each call callback!")
@@ -226,11 +235,14 @@ class CallDetectionService : Service() {
         if (getSubIdForSlot(0) != -1){
             Log.d(TAG, "registerCallCallbacks(): getSubIdForSlot(0) doesn't return -1")
             telMgrSlot0.registerTelephonyCallback(mainExecutor, telCallBackSim0)
+            // setting the control variable to true
+            callBackRegisteredSIM0 = true
             Log.d(TAG, "registerCallCallbacks(): successfully registered TelephonyCallback on Slot index 0!")
         }
         if (getSubIdForSlot(1) != -1){
             Log.d(TAG, "registerCallCallbacks(): getSubIdForSlot(1) doesn't return -1")
             telMgrSlot1.registerTelephonyCallback(mainExecutor, telCallBackSim1)
+            callBackRegisteredSIM1 = true
             Log.d(TAG, "registerCallCallbacks(): successfully registered TelephonyCallback on Slot index 1!")
         }
         // only register it at the end.
@@ -246,10 +258,10 @@ class CallDetectionService : Service() {
         telephonyManager.unregisterTelephonyCallback(telephonyCallback)
         Log.d(TAG,"main TelephonyCallback is unregistered!")
         Log.d(TAG, "Will Unregister Callbacks for each SIM Slot index of the two...")
-        if (getSubIdForSlot(0) != -1){
+        if (callBackRegisteredSIM0){
             telMgrSlot0.unregisterTelephonyCallback(telCallBackSim0)
         }
-        if (getSubIdForSlot(1) != -1){
+        if (callBackRegisteredSIM1){
             telMgrSlot1.unregisterTelephonyCallback(telCallBackSim1)
         }
         Log.d(TAG, "Successfully unregistered TelephonyCallBack for each of the two SIM Slots!")

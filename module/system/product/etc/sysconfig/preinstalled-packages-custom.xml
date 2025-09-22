@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+    <!-- install for the primary (system) user and full users -->
+    <install-in-user-type
+        package="ziad_mrx.samsung.incall_audio.ds.svc">
+        <install-in user-type="FULL" />
+        <install-in user-type="SYSTEM" />
+        <install-in user-type="PROFILE" />
+    </install-in-user-type>
+</config>

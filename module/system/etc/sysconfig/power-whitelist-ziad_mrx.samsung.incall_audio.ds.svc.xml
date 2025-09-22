@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+    <!-- Full exemption from Doze, background restrictions, standby buckets -->
+    <allow-in-power-save package="ziad_mrx.samsung.incall_audio.ds.svc"/>
+    <allow-in-data-usage-save package="ziad_mrx.samsung.incall_audio.ds.svc"/>
+    <allow-unthrottled-location package="ziad_mrx.samsung.incall_audio.ds.svc"/>
+</config>

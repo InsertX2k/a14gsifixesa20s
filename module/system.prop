@@ -17,3 +17,7 @@ persist.radio.VT_ENABLE=1
 persist.data.iwlan.enable=true
 persist.data.iwlan=1
 persist.data.iwlan.ipsec.ap=1
+# (Thanks phh) some camera libraries do not expose auxiliary cameras when 
+# this property is not set 0, since then it sees that it is not running a 
+# genuine samsung firmware.
+vendor.gsi.test=0
