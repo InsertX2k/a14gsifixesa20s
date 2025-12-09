@@ -1,6 +1,6 @@
 id=a14gsifixesa20s
 name=GSI Fixes for Samsung A20s
-version=v1.5
-versionCode=44
+version=v1.7
+versionCode=62
 author=ziad_mrx
-description=Various Fixes for TrebleDroid-based Android 11, 12, 13 and 14 GSIs on Samsung A20s
+description=Various Fixes for TrebleDroid-based Android 12+ GSIs on Samsung A20s

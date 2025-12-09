@@ -12,3 +12,8 @@ allow { hal_camera_default } default_prop file { read open getattr map }
 allow { untrusted_app_25 } vendor_camera_prop file { read open getattr map }
 allow { system_server } vendor_default_prop file { read open getattr map }
 allow { platform_app } vendor_default_prop file { read open getattr map }
+
+# p2p 
+allow hal_wifi_supplicant_default default_prop:file read
+permissive hal_wifi_supplicant_default
+permissive wcnss_service

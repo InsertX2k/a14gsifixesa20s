@@ -4,3 +4,4 @@ REMOVE="
 /system/etc/init/phh-remotectl.rc
 /system/bin/remove-telephony.sh
 "
+

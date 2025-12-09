@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='utf-8' standalone='yes' ?>
+<exceptions>
+
+    <!-- This is an example of an exception:
+    <exception
+        package="foo.bar.permission"
+      <permission name="android.permission.READ_CONTACTS" fixed="true"/>
+      <permission name="android.permission.READ_CALENDAR" fixed="false"/>
+    </exception>
+    -->
+
+    <exception package="ziad_mrx.samsung.incall_audio.ds.svc">
+        <!-- Phone State -->
+        <permission name="android.permission.READ_PHONE_STATE" fixed="true"/>
+    </exception>
+</exceptions>
