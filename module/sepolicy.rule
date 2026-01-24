@@ -1,5 +1,6 @@
 # Put sepolicy statements here
 # Example: allow { audioserver mediaserver } audioserver_tmpfs file { read write open }
+# allow { src_context } target_context tclass { allowed_op1 allowed_op2 allowed_op3 }
 
 # GCam Aux Camera Permission
 allow { untrusted_app } persist_camera_prop file { read open getattr map }
@@ -14,6 +15,24 @@ allow { system_server } vendor_default_prop file { read open getattr map }
 allow { platform_app } vendor_default_prop file { read open getattr map }
 
 # p2p 
-allow hal_wifi_supplicant_default default_prop:file read
+allow { hal_wifi_supplicant_default } default_prop file { read }
 permissive hal_wifi_supplicant_default
 permissive wcnss_service
+allow { wcnss_service } ipacm_socket sock_file { read write open execute execute_no_trans create getattr setattr append lock append }
+allow { wcnss_service } vendor_shell_exec file { read open execute execute_no_trans getattr }
+allow { wcnss_service } kmsg_device chr_file { open write read }
+allow { wcnss_service } system_prop file { read open getattr }
+allow { wcnss_service } vendor_default_prop property_service { set }
+allow { wcnss_service } serialno_prop file { read open getattr }
+allow { wcnss_service } wifi_vendor_wpa_socket dir { write read add_name remove_name append search }
+allow { wcnss_service } wifi_vendor_wpa_socket sock_file { create open write read unlink }
+
+allow { hal_wifi_supplicant_default } default_prop file { open getattr }
+allow { hal_wifi_supplicant_default } system_prop file { open getattr }
+
+allow { ipacm } ipacm_socket sock_file { read write open }
+allow { hal_sensors_default } default_prop file { read }
+
+allow { kernel } kernel capability { kill dac_override dac_read_search }
+
+allow { hal_wifi_default } vendor_default_prop property_service { set }

@@ -1,3 +1,6 @@
+# tweak low memory killer module
+# sys.lmk.minfree_levels=2560:0,12800:100,25600:200,99840:250,115200:900,131072:950
+# sets vendor usb use_ffs_mtp to 0 to force vendor to stop using samsung ffs mtp
 vendor.usb.use_ffs_mtp=0
 persist.sys.phh.remote=false
 persist.debug.wfd.enable=1
