@@ -24,3 +24,4 @@ persist.data.iwlan.ipsec.ap=1
 # this property is not set 0, since then it sees that it is not running a 
 # genuine samsung firmware.
 vendor.gsi.test=0
+ro.wifi.p2p_supported=true

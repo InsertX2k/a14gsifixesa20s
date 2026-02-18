@@ -19,13 +19,18 @@ allow { hal_wifi_supplicant_default } default_prop file { read }
 permissive hal_wifi_supplicant_default
 permissive wcnss_service
 allow { wcnss_service } ipacm_socket sock_file { read write open execute execute_no_trans create getattr setattr append lock append }
-allow { wcnss_service } vendor_shell_exec file { read open execute execute_no_trans getattr }
+allow { wcnss_service } vendor_shell_exec file { rx_file_perms read open execute execute_no_trans getattr }
 allow { wcnss_service } kmsg_device chr_file { open write read }
 allow { wcnss_service } system_prop file { read open getattr }
 allow { wcnss_service } vendor_default_prop property_service { set }
 allow { wcnss_service } serialno_prop file { read open getattr }
 allow { wcnss_service } wifi_vendor_wpa_socket dir { write read add_name remove_name append search }
 allow { wcnss_service } wifi_vendor_wpa_socket sock_file { create open write read unlink }
+allow { wcnss_service } kmsg_device chr_file { w_file_perms };
+allow { wcnss_service } wifi_vendor_wpa_socket dir { create_dir_perms };
+allow { wcnss_service } wifi_vendor_wpa_socket sock_file { create_file_perms };
+
+set_prop(wcnss_service, vendor_wifi_prop);
 
 allow { hal_wifi_supplicant_default } default_prop file { open getattr }
 allow { hal_wifi_supplicant_default } system_prop file { open getattr }
@@ -36,3 +41,21 @@ allow { hal_sensors_default } default_prop file { read }
 allow { kernel } kernel capability { kill dac_override dac_read_search }
 
 allow { hal_wifi_default } vendor_default_prop property_service { set }
+
+# for testing ONLY (unsafe, do not use)
+# permissive system_server
+# permissive wpa_data_file
+# permissive wcnss_service_exec
+
+# for the Wifi P2p and WFD Fix Xposed module
+# since it uses the secontext of system_server
+# ty audit 2 allow for generating me this
+allow { hal_wifi_supplicant_default } system_server unix_dgram_socket { sendto }
+allow { system_server } hal_wifi_supplicant_default unix_dgram_socket { sendto }
+allow { system_server } system_data_root_file file { getattr open read }
+allow { system_server } vendor_system_prop file { read }
+allow { system_server } wcnss_service_exec file { execute execute_no_trans getattr open read }
+allow { system_server } wpa_data_file dir { add_name remove_name search write }
+allow { system_server } wpa_data_file sock_file { create setattr getattr unlink write }
+allow { system_server } wifi_vendor_data_file dir { add_name remove_name search write }
+
