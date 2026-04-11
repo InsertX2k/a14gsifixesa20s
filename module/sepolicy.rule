@@ -59,3 +59,7 @@ allow { system_server } wpa_data_file dir { add_name remove_name search write }
 allow { system_server } wpa_data_file sock_file { create setattr getattr unlink write }
 allow { system_server } wifi_vendor_data_file dir { add_name remove_name search write }
 
+# possibly for fast charging?
+allow { thermal-engine } sysfs_battery dir { search }
+allow { hal_thermal_default } sysfs_battery_supply dir { search }
+allow { hal_health_default } sysfs_battery_supply file { open read }

@@ -49,6 +49,38 @@ public class MainHook implements IXposedHookLoadPackage {
 
         XposedBridge.log(TAG + "Monitoring Service Registration in System Server...");
 
+        // Fix for Android 14+
+        try {
+            XposedHelpers.findAndHookMethod("com.android.server.SystemServiceManager", lpparam.classLoader, "startServiceFromJar", String.class, String.class, new XC_MethodHook() {
+                @Override
+                protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                    // param.args[0] is a String object holding current service name
+                    // param.result is the service instance, from which we will get the
+                    // actual classloader object we need to use.
+                    String svc_name = (String) param.args[0];
+                    if (svc_name.toLowerCase().contains("wifi.p2p")) {
+                        XposedBridge.log(TAG + "Found service:" + svc_name + "!");
+                        if (!hooksApplied) {
+                            // if hooks aren't applied only
+                            // we will retrieve the class loader object from the return value
+                            // of this function
+                            Object svc_instance = param.getResult();
+                            if (svc_instance != null) {
+                                // we will get its class loader and use it with applyhooks
+                                applyHooks(svc_instance.getClass().getClassLoader());
+                                XposedBridge.log(TAG + "Successfully applied hooks!");
+                            } else {
+                                XposedBridge.log(TAG + "Service instance is NULL!");
+                            }
+                        }
+                    }
+                }
+            });
+        } catch (Exception e) {
+            XposedBridge.log(TAG + "Error: failed to hook into startServiceFromJar(): " + e.getMessage());
+        }
+
+
         // Every service, even those from APEX, must register itself to be usable.
         // We hook the 'addService' method which is the "front desk" of all Android services.
         try {
