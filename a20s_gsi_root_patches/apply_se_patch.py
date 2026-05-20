@@ -57,11 +57,15 @@ def getLatestPolicyMappingFileAbsPath() -> str:
     # convert each file name's indexes [0:3] into float
     # see which one is the largest value, then return its absolute path.
     __largest: float = 0.0
+    __largest_fname: str = ""
     for __file in listdir( POLICY_MAPPING_DIR_ABS_PATH ):
-        __ver: float = float(__file[0:3])
-        if __ver > __largest: __largest = __ver
+        try: __ver: float = float(__file[:-4])
+        except: continue # move onto the next one if this one contains any string
+        if __ver > __largest: 
+            __largest = __ver
+            __largest_fname = __file
     
-    __latestMappingFileAbsPathStr: str = f"{POLICY_MAPPING_DIR_ABS_PATH}\\{__largest}.cil"
+    __latestMappingFileAbsPathStr: str = f"{POLICY_MAPPING_DIR_ABS_PATH}\\{__largest_fname}"
     return __latestMappingFileAbsPathStr
     
 
