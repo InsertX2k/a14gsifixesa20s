@@ -36,7 +36,7 @@ allow { hal_wifi_supplicant_default } default_prop file { open getattr }
 allow { hal_wifi_supplicant_default } system_prop file { open getattr }
 
 allow { ipacm } ipacm_socket sock_file { read write open }
-allow { hal_sensors_default } default_prop file { read }
+allow { hal_sensors_default } default_prop file { read open }
 
 allow { kernel } kernel capability { kill dac_override dac_read_search }
 
@@ -63,3 +63,17 @@ allow { system_server } wifi_vendor_data_file dir { add_name remove_name search 
 allow { thermal-engine } sysfs_battery dir { search }
 allow { hal_thermal_default } sysfs_battery_supply dir { search }
 allow { hal_health_default } sysfs_battery_supply file { open read }
+
+# Misc fixes
+allow { system_server } default_android_service service_manager { find }
+allow { surfaceflinger } hal_miscpower_hwservice hwservice_manager { find }
+allow { system_server } users_system_data_file file { ioctl getattr read write open }
+allow { platform_app } default_android_hwservice hwservice_manager { find }
+allow { system_server } default_android_hwservice hwservice_manager { find }
+allow { system_app } default_android_service service_manager { find }
+allow { system_app } default_android_hwservice hwservice_manager { find }
+allow { system_server } sysfs file { read getattr }
+
+
+# disable this if graphical glitches appear
+allow { hal_perf_default } hal_graphics_composer_default binder { call }

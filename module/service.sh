@@ -9,7 +9,10 @@ chmod 775 /system/bin/sswap
 # but first we must wait for sys.boot_completed signal
 while [ "$(getprop sys.boot_completed)" != "1" ]; do sleep 1; done
 # at this stage sys.boot_completed signal must've been sent, we can set lmk minfree params
-echo "2560,12800,25600,99840,115200,131072" > /sys/module/lowmemorykiller/parameters/minfree
+# BUT ONLY FOR AOSP 14 or older, AOSP 14 or newer GSIs do already have their own LMK config
+if [ $(getprop ro.build.version.sdk) -le 34 ]; then {
+   echo "2560,12800,25600,99840,115200,131072" > /sys/module/lowmemorykiller/parameters/minfree
+}; fi
 # will automatically grant permission on every single boot.
 pm grant ziad_mrx.samsung.incall_audio.ds.svc android.permission.READ_PHONE_STATE
 # THESE COMMANDS ARE FOR THE COMPANION P2P FIX XPOSED MODULE, SO THEY MUST BE THE LAST LINES TO EXECUTE.
