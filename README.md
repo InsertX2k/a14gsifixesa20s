@@ -9,3 +9,8 @@ A Magisk module that attempts to stabilize the GSI experience on the Samsung Gal
 * Navigate to the [p2p_wfd_fix_xposed_mod_src](https://github.com/InsertX2k/a14gsifixesa20s/tree/main/p2p_wfd_fix_xposed_mod_src) directory if you want to view the source files for the Xposed module that fixes Wi-Fi Direct and WFD (Wi-Fi Display).
 
 * If you want to boot Android 14+ GSIs on Enforcing kernels, Use the `apply_all_patches.*` script files in the [a20s_gsi_root_patches](https://github.com/InsertX2k/a14gsifixesa20s/tree/main/a20s_gsi_root_patches) directory.
+
+
+## Special Thanks
+* [phhusson](https://github.com/phhusson)
+* [TBM13](https://github.com/TBM13)
